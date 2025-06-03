@@ -9,7 +9,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
-public class UrlFilter implements Filter {
+public class UriFilter implements Filter {
 
     private static final Pattern SAFE_URL_PATTERN = Pattern.compile("^[a-zA-Z0-9\\?&=:/]*$");
 
@@ -18,15 +18,18 @@ public class UrlFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String rawUri = httpRequest.getRequestURI();
+        String queryString = httpRequest.getQueryString();
 
+
+        String fullUri = rawUri + (queryString != null ? "?" + queryString : "");
         // 디코딩된 URI 검사
-        String decodedUri = URLDecoder.decode(rawUri, StandardCharsets.UTF_8);
+        String decodedUri = URLDecoder.decode(fullUri, StandardCharsets.UTF_8);
 
         if (!SAFE_URL_PATTERN.matcher(decodedUri).matches()) {
             HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
             httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpResponse.setContentType("application/json");
-            httpResponse.getWriter().write("{\"reason\": \"URL에 허용되지 않은 특수문자가 포함되어 있습니다.\"}");
+            httpResponse.getWriter().write("{\"reason\": \"요청 주소에 허용되지 않은 문자가 포함되어 있습니다.\"}");
             return;
         }
 
