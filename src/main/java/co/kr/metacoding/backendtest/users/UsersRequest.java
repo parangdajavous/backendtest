@@ -13,6 +13,10 @@ public class UsersRequest {
                     .name(name)
                     .build();
         }
+    }
 
+    @Data
+    public static class UpdateDTO {
+        private String name;
     }
 }
