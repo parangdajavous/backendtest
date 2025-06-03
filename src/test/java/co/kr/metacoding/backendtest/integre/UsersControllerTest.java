@@ -203,6 +203,7 @@ public class UsersControllerTest {
 
     }
 
+
     @Test
     public void invalid_uri_test() throws Exception {
         // given
@@ -224,6 +225,7 @@ public class UsersControllerTest {
         actions.andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reason").value("요청 주소에 허용되지 않은 문자가 포함되어 있습니다."));
     }
+
 }
 
 
