@@ -8,9 +8,18 @@ public class UsersResponse {
     @Data
     public static class SaveDTO {
         private Integer id;
-        private String name;
 
         public SaveDTO(Users users) {
+            this.id = users.getId();
+        }
+    }
+
+    @Data
+    public static class GetDTO {
+        private Integer id;
+        private String name;
+
+        public GetDTO(Users users) {
             this.id = users.getId();
             this.name = users.getName();
         }
