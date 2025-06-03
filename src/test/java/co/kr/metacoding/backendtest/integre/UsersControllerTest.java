@@ -204,4 +204,29 @@ public class UsersControllerTest {
     }
 
 
+    @Test
+    public void invalid_uri_test() throws Exception {
+        // given
+        Integer id = 1;
+
+        // when
+        ResultActions actions = mvc.perform(
+                MockMvcRequestBuilders
+                        .get("/users/{id}?name=test!!", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+
+        // eye
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        System.out.println(responseBody);
+
+        // then
+        actions.andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reason").value("요청 주소에 허용되지 않은 문자가 포함되어 있습니다."));
+    }
+
 }
+
+
+
