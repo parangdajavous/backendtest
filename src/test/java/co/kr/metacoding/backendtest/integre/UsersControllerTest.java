@@ -144,4 +144,64 @@ public class UsersControllerTest {
     }
 
 
+    @Test
+    public void update_test() throws Exception {
+        // given
+        Integer id = 1;
+
+        UsersRequest.UpdateDTO reqDTO = new UsersRequest.UpdateDTO();
+        reqDTO.setName("임라라");
+
+        String requestBody = om.writeValueAsString(reqDTO);
+        System.out.println(requestBody);
+
+        // when
+        ResultActions actions = mvc.perform(
+                MockMvcRequestBuilders
+                        .put("/users/{id}", id)
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // eye
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        System.out.println(responseBody);
+
+        // then
+        actions.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").exists());
+
+    }
+
+    @Test
+    public void update_fail_test() throws Exception {
+        // given
+        Integer id = 6;
+
+        UsersRequest.UpdateDTO reqDTO = new UsersRequest.UpdateDTO();
+        reqDTO.setName("임라라");
+
+        String requestBody = om.writeValueAsString(reqDTO);
+        System.out.println(requestBody);
+
+        // when
+        ResultActions actions = mvc.perform(
+                MockMvcRequestBuilders
+                        .put("/users/{id}", id)
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // eye
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        System.out.println(responseBody);
+
+        // then
+        actions.andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reason").exists());
+
+    }
+
+
 }
