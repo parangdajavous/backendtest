@@ -96,4 +96,52 @@ public class UsersControllerTest {
     }
 
 
+    @Test
+    public void get_test() throws Exception {
+        // given
+        Integer id = 1;
+
+
+        // when
+        ResultActions actions = mvc.perform(
+                MockMvcRequestBuilders
+                        .get("/users/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // eye
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        System.out.println(responseBody);
+
+        // then
+        actions.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").exists());
+
+
+    }
+
+    @Test
+    public void get_fail_test() throws Exception {
+        // given
+        Integer id = 5;
+
+
+        // when
+        ResultActions actions = mvc.perform(
+                MockMvcRequestBuilders
+                        .get("/users/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // eye
+        String responseBody = actions.andReturn().getResponse().getContentAsString();
+        System.out.println(responseBody);
+
+        // then
+        actions.andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.reason").exists());
+    }
+
+
 }
