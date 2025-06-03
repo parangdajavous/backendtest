@@ -143,6 +143,7 @@ public class UsersControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reason").exists());
     }
 
+
     @Test
     public void update_test() throws Exception {
         // given
@@ -201,5 +202,6 @@ public class UsersControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reason").exists());
 
     }
+
 
 }
