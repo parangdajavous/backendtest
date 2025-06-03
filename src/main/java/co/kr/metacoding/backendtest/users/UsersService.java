@@ -29,4 +29,13 @@ public class UsersService {
 
         return new UsersResponse.GetDTO(usersOP);
     }
+
+    @Transactional
+    public UsersResponse.UpdateDTO update(UsersRequest.UpdateDTO reqDTO, Integer id) {
+        Users usersOP = usersRepository.findById(id)
+                .orElseThrow(() -> new ExceptionApi404("user가 존재하지 않습니다"));
+
+        usersOP.update(reqDTO.getName());
+        return new UsersResponse.UpdateDTO(usersOP);
+    }
 }
