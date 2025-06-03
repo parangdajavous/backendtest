@@ -95,6 +95,7 @@ public class UsersControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.reason").exists());
     }
 
+
     @Test
     public void get_test() throws Exception {
         // given
